@@ -2,7 +2,9 @@
 function AIPromptInsightsStudio(runtime, element, config) {
   "use strict";
   var $root = $(element).find(".pe-studio");
-  function $field(name) { return $root.find("#xb-field-edit-" + name); }
+  function $field(name) {
+    return $root.find("#xb-field-edit-" + name);
+  }
 
   // Model dropdown: the fixed list of supported models.
   var $model = $field("model");
@@ -24,11 +26,13 @@ function AIPromptInsightsStudio(runtime, element, config) {
     $keyClear.toggleClass("active", saved).toggleClass("inactive", !saved);
     $root.find(".pe-key-help").text(
       removeKey ? "The saved key will be removed when you save." :
-      saved ? "A key is saved. Leave blank to keep it, or enter a new key to replace it." :
-      "Required for AI feedback. Stored with this component and included in course exports.");
+      saved ? "An encrypted key is saved. Leave blank to keep it, or enter a new key to replace it." :
+      "Encrypted before storage; course exports contain ciphertext, not the plaintext key.");
   }
   $key.on("input", function () { removeKey = false; updateKeyState(); });
-  $keyClear.on("click", function () { if (config.hasApiKey) { removeKey = true; $key.val(""); updateKeyState(); } });
+  $keyClear.on("click", function () { if (config.hasApiKey) {
+    removeKey = true; $key.val(""); updateKeyState();
+  } });
   updateKeyState();
 
   $root.find(".save-button").on("click", function (event) {

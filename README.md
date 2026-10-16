@@ -1,4 +1,4 @@
-# AI Prompt Insights XBlock (v0.1.3)
+# AI Prompt Insights XBlock (v0.1.4)
 
 Open edX formative prompt-writing activity: instructor-provided scenario, learner submission, AI evaluation (strengths, weaknesses, RCTF score, coaching feedback), retry, and completion on first valid submission.
 
@@ -32,9 +32,9 @@ The editor uses Studio's standard settings-form markup (the same as xblock-lti-c
 
 Minimum and maximum prompt lengths are no longer Studio settings. Input validation uses fixed limits of **20–5,000 characters** in both the learner interface and backend.
 
-The key field is masked and never displays the stored key. Leave it blank to keep the key, enter a replacement, or click the field's reset (↺) button and save to remove it. Saving without a key is allowed; learner submissions still complete the activity, but feedback fails until a key is configured. Neither API key nor model is read from environment variables.
+The key field is masked and never displays the stored key. Leave it blank to keep the key, enter a replacement, or click the field's reset (↺) button and save to remove it. Saving without a key is allowed; learner submissions still complete the activity, but feedback fails until a key is configured. The API key and model come from Studio; the encryption key is read through Django settings in both LMS and CMS.
 
-Keys are stored as ordinary XBlock settings, **not encrypted by this plugin**, and may appear in course exports, backups, or copies. Restrict access to those artifacts. Saved keys are never included in learner responses or editor initialization; authoring access is checked with Studio's course write-permission service. OpenAI billing and model access are required.
+API keys are stored as Fernet-encrypted ciphertext in XBlock settings and can appear as ciphertext in exports and backups. Restrict access to those artifacts. Saved keys are never included in learner responses or editor initialization; authoring access is checked with Studio's course write-permission service. OpenAI billing and model access are required.
 
 ### Azure OpenAI and other OpenAI-compatible endpoints
 
@@ -66,3 +66,15 @@ python -m compileall -q ai_prompt_insights
 ## Limitations
 
 This is a **base implementation**, not production-hardened: synchronous AI request, no idempotency guard against concurrent duplicate submissions, no analytics backend, no Azure provider, and unbounded attempts. Editing requires the Open edX `studio_user_permissions` service; other runtimes must supply it. Validate Studio editing, publishing, and LMS progress on the target deployment. 
+
+## Encryption configuration
+
+Generate a Fernet key once with `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`. Configure it in the effective **LMS and CMS Django settings** (for example, via your Open edX `common.py` configuration):
+
+```python
+AI_PROMPT_INSIGHTS_ENCRYPTION_KEY = "<same-generated-fernet-key-in-both-services>"
+```
+
+The XBlock obtains this setting through `django.conf.settings`, not `os.environ`. Do not use a new key on each deployment. If the configuration files are tracked in Git, do **not** commit the actual key: inject the same protected value into both effective Django settings at deployment time. Keep it out of course exports; back it up independently. Existing plaintext keys must be re-entered through Studio. Losing or rotating the encryption key without migration makes previously stored credentials unreadable.
+
+Requests are limited per learner and XBlock: 10 submissions and 3 feedback retries per hour. Reuse Open edX's **shared** Django default Redis/Memcached cache across workers; per-process local memory is rejected.

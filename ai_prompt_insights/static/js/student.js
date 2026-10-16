@@ -3,7 +3,9 @@ function AIPromptInsightsXBlock(runtime, element, config) {
   "use strict";
   element = element.jquery ? element[0] : element;
   var root = element.querySelector(".pe-root");
-  function find(selector) { return root.querySelector(selector); }
+  function find(selector) {
+    return root.querySelector(selector);
+  }
 
   var attemptsBox = find(".pe-attempts"), compose = find(".pe-compose"), actions = find(".pe-actions");
   var input = find(".pe-input"), submit = find(".pe-submit"), tryAgain = find(".pe-try-again");
@@ -29,11 +31,17 @@ function AIPromptInsightsXBlock(runtime, element, config) {
   }
   function el(tag, className, text) {
     var node = document.createElement(tag);
-    if (className) { node.className = className; }
-    if (text !== undefined && text !== null) { node.textContent = text; }
+    if (className) {
+    node.className = className;
+  }
+    if (text !== undefined && text !== null) {
+    node.textContent = text;
+  }
     return node;
   }
-  function message(value) { messageBox.textContent = value || ""; }
+  function message(value) {
+    messageBox.textContent = value || "";
+  }
   // Counter, submit state and auto-growing textarea, updated as the learner types.
   var countBox = find(".pe-count");
   function updateCount() {
@@ -41,7 +49,9 @@ function AIPromptInsightsXBlock(runtime, element, config) {
     countBox.textContent = needed > 0 ? needed + " more character" + (needed === 1 ? "" : "s") + " needed"
       : input.value.length + " / " + config.maxCharacters;
     countBox.classList.toggle("is-over", length > config.maxCharacters);
-    if (!busy) { submit.disabled = needed > 0 || length > config.maxCharacters; }
+    if (!busy) {
+    submit.disabled = needed > 0 || length > config.maxCharacters;
+  }
     input.style.height = "auto";
     input.style.height = Math.min(input.scrollHeight + 2, 360) + "px";
   }
@@ -105,7 +115,9 @@ function AIPromptInsightsXBlock(runtime, element, config) {
   function reasonsBreakdown(f) {
     var reasons = f.reasons || {};
     var items = CRITERIA.filter(function (pair) { return reasons[pair[0]]; });
-    if (!items.length) { return null; }
+    if (!items.length) {
+    return null;
+  }
     var section = el("div", "pe-coach-breakdown");
     section.appendChild(el("div", "pe-coach-subtitle", "RCTF breakdown"));
     var steps = el("div", "pe-steps");
@@ -151,8 +163,12 @@ function AIPromptInsightsXBlock(runtime, element, config) {
 
   function chip(className, iconName, text, title) {
     var node = el("span", "pe-chip " + className);
-    if (title) { node.title = title; }
-    if (iconName) { node.appendChild(icon(iconName)); }
+    if (title) {
+    node.title = title;
+  }
+    if (iconName) {
+    node.appendChild(icon(iconName));
+  }
     node.appendChild(el("span", "", text));
     return node;
   }
@@ -165,14 +181,20 @@ function AIPromptInsightsXBlock(runtime, element, config) {
     var summary = el("summary", "pe-attempt-head");
     var titleBox = el("span", "pe-attempt-title");
     titleBox.appendChild(el("span", "", "Attempt " + attempt.number));
-    if (flags.latest) { titleBox.appendChild(el("span", "pe-tag", "Latest")); }
-    if (flags.best) { titleBox.appendChild(el("span", "pe-tag pe-tag-best", "Best")); }
+    if (flags.latest) {
+    titleBox.appendChild(el("span", "pe-tag", "Latest"));
+  }
+    if (flags.best) {
+    titleBox.appendChild(el("span", "pe-tag pe-tag-best", "Best"));
+  }
     summary.appendChild(titleBox);
     var meta = el("span", "pe-attempt-meta");
     if (f) {
       meta.appendChild(chip("pe-chip-good", "check", String(f.strengths.length), "Strengths"));
       meta.appendChild(chip("pe-chip-improve", "info", String(f.weaknesses.length), "Things to improve"));
-      if (config.showScore) { meta.appendChild(el("span", "pe-score-pill", String(f.overall_score))); }
+      if (config.showScore) {
+    meta.appendChild(el("span", "pe-score-pill", String(f.overall_score)));
+  }
     } else if (attempt.status === "failed") {
       meta.appendChild(chip("pe-chip-warn", "alert", "Feedback unavailable"));
     } else {
@@ -209,11 +231,19 @@ function AIPromptInsightsXBlock(runtime, element, config) {
     body.appendChild(promptBlock);
 
     if (f) {
-      if (config.showScore) { body.appendChild(scoreSection(f)); }
+      if (config.showScore) {
+    body.appendChild(scoreSection(f));
+  }
       var cards = el("div", "pe-cards");
-      if (f.strengths.length) { cards.appendChild(feedbackCard("What worked", f.strengths, "check", "good", "strength")); }
-      if (f.weaknesses.length) { cards.appendChild(feedbackCard("What to improve", f.weaknesses, "info", "improve", "area")); }
-      if (cards.children.length === 1) { cards.classList.add("is-single"); }
+      if (f.strengths.length) {
+    cards.appendChild(feedbackCard("What worked", f.strengths, "check", "good", "strength"));
+  }
+      if (f.weaknesses.length) {
+    cards.appendChild(feedbackCard("What to improve", f.weaknesses, "info", "improve", "area"));
+  }
+      if (cards.children.length === 1) {
+    cards.classList.add("is-single");
+  }
       body.appendChild(cards);
       // Coach's feedback card: gradient header, feedback paragraph, then the RCTF breakdown.
       var coach = el("section", "pe-coach");
@@ -227,7 +257,9 @@ function AIPromptInsightsXBlock(runtime, element, config) {
       var coachBody = el("div", "pe-coach-body");
       coachBody.appendChild(el("div", "pe-coach-text", f.coaching_feedback));
       var breakdown = reasonsBreakdown(f);
-      if (breakdown) { coachBody.appendChild(breakdown); }
+      if (breakdown) {
+    coachBody.appendChild(breakdown);
+  }
       coach.appendChild(coachBody);
       body.appendChild(coach);
     } else if (attempt.status === "failed") {
@@ -294,23 +326,33 @@ function AIPromptInsightsXBlock(runtime, element, config) {
     compose.hidden = !show;
     actions.hidden = show || !attemptsLeft() || Boolean(latest && latest.status === "pending");
     if (!show && !attemptsLeft()) { message("You have used all " + state.max_attempts + " attempts."); }
-    if (show) { input.value = ""; updateCount(); }
+    if (show) {
+    input.value = ""; updateCount();
+  }
   }
 
   function setBusy(value, button, busyLabel) {
     busy = value;
     submit.disabled = value; tryAgain.disabled = value;
-    if (value) { button.dataset.label = button.textContent; button.textContent = busyLabel; }
-    else if (button.dataset.label) { button.textContent = button.dataset.label; }
+    if (value) {
+    button.dataset.label = button.textContent; button.textContent = busyLabel;
+  }
+    else if (button.dataset.label) {
+    button.textContent = button.dataset.label;
+  }
     button.disabled = value;
     button.classList.toggle("is-loading", value);
-    if (!value) { updateCount(); }
+    if (!value) {
+    updateCount();
+  }
   }
 
   function csrfToken() {
     // fetch does not inherit the LMS jQuery AJAX CSRF setup, so send Django's token explicitly.
     var cookie = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]*)/);
-    if (cookie) { return decodeURIComponent(cookie[1]); }
+    if (cookie) {
+    return decodeURIComponent(cookie[1]);
+  }
     var field = document.querySelector("input[name=csrfmiddlewaretoken]");
     return field ? field.value : "";
   }
@@ -320,13 +362,17 @@ function AIPromptInsightsXBlock(runtime, element, config) {
       headers: {"Content-Type": "application/json", "X-CSRFToken": csrfToken()},
       body: JSON.stringify(payload || {})
     }).then(function (response) {
-      if (!response.ok) { throw new Error("Request failed (" + response.status + ")"); }
+      if (!response.ok) {
+    throw new Error("Request failed (" + response.status + ")");
+  }
       return response.json();
     });
   }
 
   tryAgain.addEventListener("click", function () {
-    if (busy) { return; }
+    if (busy) {
+    return;
+  }
     attemptsBox.querySelectorAll("details").forEach(function (item) { item.open = false; });
     message("");
     showComposer(true);
@@ -334,7 +380,9 @@ function AIPromptInsightsXBlock(runtime, element, config) {
   });
 
   submit.addEventListener("click", function () {
-    if (busy || submit.disabled) { return; }
+    if (busy || submit.disabled) {
+    return;
+  }
     var value = input.value.trim();
     if (value.length < config.minCharacters || value.length > config.maxCharacters) {
       message("Enter between " + config.minCharacters + " and " + config.maxCharacters + " characters."); return;
@@ -343,19 +391,25 @@ function AIPromptInsightsXBlock(runtime, element, config) {
     request("submit_prompt", {prompt: value})
       .then(function (data) {
         setBusy(false, submit);
-        if (data.error) { message(data.error); return; }
+        if (data.error) {
+    message(data.error); return;
+  }
         render(data);
       })
       .catch(function () { setBusy(false, submit); message("Could not submit the prompt. Please check your connection and retry."); });
   });
 
   function retryFeedback(button) {
-    if (busy) { return; }
+    if (busy) {
+    return;
+  }
     setBusy(true, button, "Retrying…"); message("");
     request("retry_evaluation", {})
       .then(function (data) {
         setBusy(false, button);
-        if (data.error) { message(data.error); return; }
+        if (data.error) {
+    message(data.error); return;
+  }
         render(data);
       })
       .catch(function () { setBusy(false, button); message("Could not retry feedback. Please try again."); });
