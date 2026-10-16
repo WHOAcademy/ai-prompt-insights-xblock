@@ -1,0 +1,47 @@
+<div class="pe-root">
+  <header class="pe-header">
+    <span class="pe-header-icon" aria-hidden="true">
+      <svg class="pe-icon" viewBox="0 0 24 24"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg>
+    </span>
+    <div>
+      <!-- <p class="pe-eyebrow">Practice</p> -->
+      <h3 class="pe-heading">Craft the prompt</h3>
+    </div>
+  </header>
+
+  <p class="pe-instructions">Read the scenario below and write the prompt you would use to get a useful result from an AI assistant. Try to include all four RCTF elements: Role, Context, Task, and Format. You will receive coaching feedback after you submit. There is no single correct answer.</p>
+
+  <div class="pe-guide" role="list" aria-label="RCTF elements">
+    <div class="pe-guide-item" role="listitem"><span class="pe-guide-letter" aria-hidden="true">R</span><span><b>Role</b><small>Who should the AI act as?</small></span></div>
+    <div class="pe-guide-item" role="listitem"><span class="pe-guide-letter" aria-hidden="true">C</span><span><b>Context</b><small>Who is it for, and why?</small></span></div>
+    <div class="pe-guide-item" role="listitem"><span class="pe-guide-letter" aria-hidden="true">T</span><span><b>Task</b><small>What exactly should it do?</small></span></div>
+    <div class="pe-guide-item" role="listitem"><span class="pe-guide-letter" aria-hidden="true">F</span><span><b>Format</b><small>How should the answer look?</small></span></div>
+  </div>
+
+  <section class="pe-scenario-card" aria-label="Scenario">
+    <p class="pe-scenario-label">Scenario</p>
+    <p class="pe-scenario"></p>
+  </section>
+
+  <div class="pe-attempts" hidden></div>
+
+  <div class="pe-compose" hidden>
+    <label class="pe-sr-only pe-compose-label">Your prompt</label>
+    <div class="pe-composer">
+      <textarea class="pe-input pe-composer-input" rows="4" placeholder="e.g. You are a policy analyst. Summarize…"></textarea>
+      <div class="pe-composer-foot">
+        <span class="pe-shortcut">Ctrl + Enter to submit</span>
+        <span class="pe-composer-right">
+          <span class="pe-count" aria-live="polite"></span>
+          <button class="pe-btn pe-btn-primary pe-submit" type="button">Check prompt</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pe-message" role="status" aria-live="polite"></div>
+
+  <div class="pe-actions" hidden>
+    <button class="pe-btn pe-btn-secondary pe-try-again" type="button">Try again</button>
+  </div>
+</div>

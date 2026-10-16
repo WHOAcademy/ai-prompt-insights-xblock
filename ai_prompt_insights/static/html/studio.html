@@ -1,0 +1,67 @@
+<div class="editor-with-buttons pe-studio">
+  <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+    <ul class="list-input settings-list">
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="display_name">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-display_name">Display Name</label>
+          <input type="text" class="field-data-control" id="xb-field-edit-display_name">
+        </div>
+        <span class="tip setting-help">The name learners see for this component.</span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="scenario">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-scenario">Scenario</label>
+          <textarea class="field-data-control" id="xb-field-edit-scenario" rows="5" cols="70"></textarea>
+        </div>
+        <span class="tip setting-help">The situation learners write a prompt for.</span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="max_attempts">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-max_attempts">Maximum Attempts</label>
+          <input type="number" class="field-data-control" id="xb-field-edit-max_attempts" min="0" step="1">
+        </div>
+        <span class="tip setting-help">How many prompts a learner may submit. 0 means unlimited.</span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="show_score">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-show_score">Show Score</label>
+          <select class="field-data-control" id="xb-field-edit-show_score">
+            <option value="1">True</option>
+            <option value="0">False</option>
+          </select>
+        </div>
+        <span class="tip setting-help">Show the numeric RCTF score with the feedback.</span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="api_base_url">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-api_base_url">API Base URL</label>
+          <input type="url" class="field-data-control" id="xb-field-edit-api_base_url" spellcheck="false" maxlength="500" placeholder="https://api.openai.com/v1 (default)">
+        </div>
+        <span class="tip setting-help">Leave blank for OpenAI. For Azure OpenAI or another OpenAI-compatible service, enter its endpoint, e.g. https://&lt;resource&gt;.openai.azure.com/openai/v1/</span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry" data-field-name="api_key">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-api_key">API Key</label>
+          <input type="password" class="field-data-control" id="xb-field-edit-api_key" autocomplete="new-password" spellcheck="false" maxlength="1024">
+          <button class="action setting-clear inactive" type="button" data-tooltip="Remove saved key">
+            <i class="icon fa fa-undo"></i><span class="sr">Remove saved key</span>
+          </button>
+        </div>
+        <span class="tip setting-help pe-key-help"></span>
+      </li>
+      <li class="field comp-setting-entry metadata_entry is-set" data-field-name="model">
+        <div class="wrapper-comp-setting">
+          <label class="label setting-label" for="xb-field-edit-model">Model</label>
+          <select class="field-data-control" id="xb-field-edit-model"></select>
+        </div>
+        <span class="tip setting-help pe-model-help">The model used for feedback. With a custom API Base URL, it must match the model or deployment name there.</span>
+      </li>
+    </ul>
+  </div>
+  <div class="xblock-actions">
+    <ul>
+      <li class="action-item"><a href="#" class="button action-primary save-button">Save</a></li>
+      <li class="action-item"><a href="#" class="button cancel-button">Cancel</a></li>
+    </ul>
+  </div>
+</div>

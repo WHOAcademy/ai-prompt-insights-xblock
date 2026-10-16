@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-prompt-insights"
+version = "0.1.3"
+description = "Open edX prompt-writing exercise with rubric feedback and completion"
+requires-python = ">=3.10"
+dependencies = ["XBlock", "openai>=1.0,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.entry-points."xblock.v1"]
+ai_prompt_insights = "ai_prompt_insights.xblock:AIPromptInsightsXBlock"
+
+[tool.setuptools.packages.find]
+include = ["ai_prompt_insights*"]
+
+[tool.setuptools.package-data]
+ai_prompt_insights = ["static/html/*.html", "static/css/*.css", "static/js/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
